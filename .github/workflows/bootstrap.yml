@@ -1,10 +1,7 @@
-name: Deploy CDK Stack
+name: Bootstrap CDK Stack
 
 # Trigger the workflow on pushes to the main branch or any other branch you prefer
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
 
 jobs:
   deploy:
@@ -37,7 +34,5 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: 'eu-west-2' 
 
-      # Step 6: Deploy CDK stack
-      - name: Deploy CDK stack
-        run: cdk deploy --require-approval never
-
+      - name: Bootstrap CDK
+        run: cdk bootstrap aws://664418951913/eu-west-1
