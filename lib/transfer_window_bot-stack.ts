@@ -18,9 +18,6 @@ export class TransferWindowBotStack extends cdk.Stack {
       },
     });
 
-    // Grant Lambda permission to read the secret
-    secret.grantRead(whatsappLambda);
-
     // Define the API Gateway REST API with a dedicated endpoint for the webhook
     const api = new apigateway.RestApi(this, 'WhatsappApiGateway', {
       restApiName: 'WhatsApp Webhook API',
