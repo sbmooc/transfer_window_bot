@@ -12,7 +12,7 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
-      body: "test_string",
+      body: 1234,
     };
   } catch (error) {
     console.error("Error processing webhook:", error);
