@@ -24,7 +24,7 @@ export class TransferWindowBotStack extends cdk.Stack {
       description: 'API Gateway for receiving WhatsApp webhook events.',
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
-        allowMethods: ['POST'],
+        allowMethods: ['POST', "GET"],
       },
     });
 
@@ -35,6 +35,10 @@ export class TransferWindowBotStack extends cdk.Stack {
     const webhookResource = api.root.addResource('whatsapp-webhook');
     webhookResource.addMethod('POST', whatsappIntegration, {
     });
+    const webhookResource = api.root.addResource('whatsapp-webhook');
+    webhookResource.addMethod('GET', whatsappIntegration, {
+    });
+  }
   }
 }
 
