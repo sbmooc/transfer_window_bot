@@ -13,7 +13,7 @@ export class TransferWindowBotStack extends cdk.Stack {
     const whatsappLambda = new lambda.Function(this, 'WhatsappWebhookHandler', {
       runtime: lambda.Runtime.NODEJS_18_X,
       code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
-      handler: 'whatsappWebhookHandler.handler',
+      handler: 'WhatsappWebhookHandler.handler',
       environment: {
       },
     });
