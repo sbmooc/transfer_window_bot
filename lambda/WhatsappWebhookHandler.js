@@ -8,6 +8,7 @@ exports.handler = async (event) => {
     console.log("API Key:", apiKey);
 
     const body = JSON.parse(event.body || '{}');
+    console.log(event)
     console.log(body)
 
     return {
