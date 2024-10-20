@@ -34,10 +34,6 @@ export class TransferWindowBotStack extends cdk.Stack {
     // Add a specific resource and method for the WhatsApp Webhook
     const webhookResource = api.root.addResource('whatsapp-webhook');
     webhookResource.addMethod('POST', whatsappIntegration, {
-      requestValidatorOptions: {
-        requestValidatorName: "WebhookPayloadValidator",
-        validateRequestBody: true,
-      },
     });
   }
 }
