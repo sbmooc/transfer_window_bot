@@ -9,11 +9,10 @@ exports.handler = async (event) => {
 
     const body = JSON.parse(event.body || '{}');
     console.log(event)
-    console.log(body)
 
     return {
       statusCode: 200,
-      body: "test_string",
+      body: event.queryStringParameters["hub.verify_token"],
     };
   } catch (error) {
     console.error("Error processing webhook:", error);
