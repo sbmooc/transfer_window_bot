@@ -12,7 +12,7 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
-      body: event.queryStringParameters["hub.verify_token"],
+      body: event.queryStringParameters["hub.challenge"],
     };
   } catch (error) {
     console.error("Error processing webhook:", error);
