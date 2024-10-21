@@ -1,11 +1,21 @@
 // lambda/whatsappWebhookHandler.js
+//
+
+const yaml = require('js-yaml')
+const aws = required('aws-sdk')
+const s3 = new AWS.S3()
 
 exports.handler = async (event) => {
   try {
-    // Access the environment variables
-    const apiKey = process.env.API_KEY;
 
-    console.log("API Key:", apiKey);
+    const apiKey = process.env.API_KEY;
+    const bucket = process.env.BUCKET_NAME
+
+    const response = await s3.send(new s3.GetObjectCommand({Bucket: bucket, key: "config.yaml"}))
+    const str = response.Body.transformToString();
+
+
+    console.log("Yaml file:", str);
 
     const body = JSON.parse(event.body || '{}');
     console.log(event)

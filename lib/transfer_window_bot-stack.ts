@@ -23,7 +23,7 @@ export class TransferWindowBotStack extends cdk.Stack {
       code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
       handler: 'WhatsappWebhookHandler.handler',
       environment: {
-	BUCKET_NAME: bucket.bucketName
+	        BUCKET_NAME: bucket.bucketName
       },
     });
 
