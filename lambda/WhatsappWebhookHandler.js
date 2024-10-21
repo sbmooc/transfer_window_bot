@@ -1,24 +1,23 @@
-// lambda/whatsappWebhookHandler.js
-//
+const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3');
+const yaml = require('js-yaml');
 
-const yaml = require('js-yaml')
-const aws = require('aws-sdk')
-const s3 = new aws.S3()
+const s3 = new S3Client(); // Create a new S3 client
 
 exports.handler = async (event) => {
   try {
-
     const apiKey = process.env.API_KEY;
-    const bucket = process.env.BUCKET_NAME
+    const bucket = process.env.BUCKET_NAME;
 
-    const response = await s3.send(new s3.GetObjectCommand({Bucket: bucket, key: "config.yaml"}))
-    const str = response.Body.transformToString();
-
+    const response = await s3.send(new GetObjectCommand({ Bucket: bucket, Key: "config.yaml" }));
+    const str = await streamToString(response.Body); // Convert the response stream to string
 
     console.log("Yaml file:", str);
 
+    const config = yaml.load(str); // Parse the YAML string
+    console.log("Parsed YAML:", config);
+
     const body = JSON.parse(event.body || '{}');
-    console.log(event)
+    console.log(event);
 
     return {
       statusCode: 200,
@@ -32,4 +31,13 @@ exports.handler = async (event) => {
     };
   }
 };
+
+// Helper function to convert stream to string
+const streamToString = (stream) =>
+  new Promise((resolve, reject) => {
+    const chunks = [];
+    stream.on('data', (chunk) => chunks.push(chunk));
+    stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+    stream.on('error', reject);
+  });
 
