@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import * as path from 'path';
@@ -9,14 +10,24 @@ export class TransferWindowBotStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    const bucket = new s3.Bucket(this, 'TransferBucket', {
+      versioned: false, // Optional: Enable versioning
+      removalPolicy: cdk.RemovalPolicy.RETAIN, 
+      autoDeleteObjects: false, 
+    });
+
+
     // Define the Lambda function using code from the external file
     const whatsappLambda = new lambda.Function(this, 'WhatsappWebhookHandler', {
       runtime: lambda.Runtime.NODEJS_18_X,
       code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
       handler: 'WhatsappWebhookHandler.handler',
       environment: {
+	BUCKET_NAME: bucket.bucketName
       },
     });
+
+    bucket.grantReadWrite(whatsappLambda)
 
     // Define the API Gateway REST API with a dedicated endpoint for the webhook
     const api = new apigateway.RestApi(this, 'WhatsappApiGateway', {
@@ -34,8 +45,10 @@ export class TransferWindowBotStack extends cdk.Stack {
     // Add a specific resource and method for the WhatsApp Webhook
     const webhookResource = api.root.addResource('whatsapp-webhook');
     webhookResource.addMethod('POST', whatsappIntegration, {});
-
     webhookResource.addMethod('GET', whatsappIntegration, {});
+	
+    
+
   }
   }
 
