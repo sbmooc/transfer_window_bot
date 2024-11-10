@@ -27,7 +27,7 @@ export class TransferWindowBotStack extends cdk.Stack {
     bucket.grantReadWrite(whatsappLambda);
 
     new s3deploy.BucketDeployment(this, "DeployConfig", {
-      sources: [s3deploy.Source.asset("../config.yaml")],
+      sources: [s3deploy.Source.asset(path.join(__dirname, "../config.yaml"))],
       destinationBucket: bucket,
       destinationKeyPrefix: "config",
       retainOnDelete: false,
