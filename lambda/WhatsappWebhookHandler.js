@@ -5,19 +5,19 @@ const s3 = new S3Client(); // Create a new S3 client
 
 exports.handler = async (event) => {
   try {
-    const apiKey = process.env.API_KEY;
-    const bucket = process.env.BUCKET_NAME;
+   // const apiKey = process.env.API_KEY;
+   // const bucket = process.env.BUCKET_NAME;
 
-    const response = await s3.send(new GetObjectCommand({ Bucket: bucket, Key: "config.yaml" }));
-    const str = await streamToString(response.Body); // Convert the response stream to string
+      const response = await s3.send(new GetObjectCommand({ Bucket: bucket, Key: "config.yaml" }));
+   // const str = await streamToString(response.Body); // Convert the response stream to string
 
-    console.log("Yaml file:", str);
+   // console.log("Yaml file:", str);
 
-    const config = yaml.load(str); // Parse the YAML string
-    console.log("Parsed YAML:", config);
+   // const config = yaml.load(str); // Parse the YAML string
+   // console.log("Parsed YAML:", config);
 
-    const body = JSON.parse(event.body || '{}');
-    console.log(event);
+   // const body = JSON.parse(event.body || '{}');
+   // console.log(event);
 
     return {
       statusCode: 200,
