@@ -2,7 +2,7 @@ import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as s3 from "aws-cdk-lib/aws-s3";
-import * as s3deploy from "aws-cdk/aws-s3-deployment";
+import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 import * as path from "path";
 
@@ -26,9 +26,11 @@ export class TransferWindowBotStack extends cdk.Stack {
 
     bucket.grantReadWrite(whatsappLambda);
 
-    s3deploy.BucketDeployment(this, "deploy-config", {
+    new s3deploy.BucketDeployment(this, "DeployConfig", {
       source: s3deploy.Source.asset("../config.yaml"),
       destinationBucket: bucket,
+      destinationKeyPrefix: "config",
+      retainOnDelete: false,
     });
 
     const api = new apigateway.RestApi(this, "WhatsappApiGateway", {
